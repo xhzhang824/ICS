@@ -3,13 +3,13 @@
 #define instr and
 
 static void do_execute () {
-    DATA_TYPE result = op_dest->val & op_src->val;
-    OPERAND_W(op_dest, result);
+	DATA_TYPE result = op_dest->val & op_src->val;
+	OPERAND_W(op_dest, result);
 
-    cpu.CF = 0;
-    cpu.OF = 0;
+	/* TODO: Update EFLAGS. */
+	panic("please implement me");
 
-    print_asm_template2();
+	print_asm_template2();
 }
 
 make_instr_helper(i2a)

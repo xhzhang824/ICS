@@ -7,8 +7,7 @@ enum { R_EAX, R_ECX, R_EDX, R_EBX, R_ESP, R_EBP, R_ESI, R_EDI };
 enum { R_AX, R_CX, R_DX, R_BX, R_SP, R_BP, R_SI, R_DI };
 enum { R_AL, R_CL, R_DL, R_BL, R_AH, R_CH, R_DH, R_BH };
 
-/**
- * Re-organize the `CPU_state' structure to match the register
+/* TODO: Re-organize the `CPU_state' structure to match the register
  * encoding scheme in i386 instruction format. For example, if we
  * access cpu.gpr[3]._16, we will get the `bx' register; if we access
  * cpu.gpr[1]._8[1], we will get the 'ch' register. Hint: Use `union'.
@@ -16,48 +15,16 @@ enum { R_AL, R_CL, R_DL, R_BL, R_AH, R_CH, R_DH, R_BH };
  */
 
 typedef struct {
-	union {
-		union {
-			uint32_t _32;
-			uint16_t _16;
-			uint8_t _8[2];
-		} gpr[8];
+	struct {
+		uint32_t _32;
+		uint16_t _16;
+		uint8_t _8[2];
+	} gpr[8];
 
 	/* Do NOT change the order of the GPRs' definitions. */
-		struct{
-			uint32_t eax, ecx, edx, ebx, esp, ebp, esi, edi;
-		};
-	};
-	struct {
- 		uint16_t CS, DS, SS, ES, FS, GS;
- 	};
-	union {
-		struct {
-			unsigned CF: 1;		//Carry Flag
-			unsigned RES1: 1;
-			unsigned PF: 1;		//Parity Flag
-			unsigned RES2: 1;
-			unsigned AF: 1;		//Assistant Flag
-			unsigned RES3: 1;
-			unsigned ZF: 1;		//Zero Flag
-			unsigned SF: 1;		//Singal Flag
-			unsigned TF: 1;		//Trap Flag
-			unsigned IF: 1;		//Interrupt Enable Flag
-			unsigned DF: 1;		//Direction Flag
-			unsigned OF: 1;		//Overflow Flag
-			unsigned IOPL: 2;	//12 13
-			unsigned NT: 1;		//Nested Task Flag
-			unsigned RES4: 1;
-			unsigned RF: 1;		// Resume Flag
-			unsigned VM: 1;		//Virtual-8086 Mode Flag
-			unsigned AC: 1;		//Alignment Check
-			unsigned VIF: 1;	//Virtual Interrupt Flag
-			unsigned VIP: 1;	//Virtual Interrupt Pending Flag
-			unsigned ID: 1;		//Identification Flag
-			unsigned RES: 10;	//RES INDICATES INTEL RESERVED. DO NOT DEFINE
-		};
-		uint32_t EFLAGS;
-	};
+
+	uint32_t eax, ecx, edx, ebx, esp, ebp, esi, edi;
+
 	swaddr_t eip;
 
 } CPU_state;

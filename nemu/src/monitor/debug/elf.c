@@ -54,7 +54,7 @@ void load_elf_tables(int argc, char *argv[]) {
 
 	int i;
 	for(i = 0; i < elf->e_shnum; i ++) {
-		if(sh[i].sh_type == SHT_SYMTAB &&
+		if(sh[i].sh_type == SHT_SYMTAB && 
 				strcmp(shstrtab + sh[i].sh_name, ".symtab") == 0) {
 			/* Load symbol table from exec_file */
 			symtab = malloc(sh[i].sh_size);
@@ -63,7 +63,7 @@ void load_elf_tables(int argc, char *argv[]) {
 			assert(ret == 1);
 			nr_symtab_entry = sh[i].sh_size / sizeof(symtab[0]);
 		}
-		else if(sh[i].sh_type == SHT_STRTAB &&
+		else if(sh[i].sh_type == SHT_STRTAB && 
 				strcmp(shstrtab + sh[i].sh_name, ".strtab") == 0) {
 			/* Load string table from exec_file */
 			strtab = malloc(sh[i].sh_size);
@@ -81,24 +81,3 @@ void load_elf_tables(int argc, char *argv[]) {
 	fclose(fp);
 }
 
-int find_var(char *str) {
-    int i;
-    for(i = 0; i < nr_symtab_entry; i++) {
-        //printf("%d: %x\t%s\n", i, symtab[i].st_value, strtab+symtab[i].st_name);
-        if(strcmp(str, strtab + symtab[i].st_name) == 0) {
-            return symtab[i].st_value;
-        }
-    }
-    return -1;
-}
-
-bool find_stack(int addr, char *str) {
-    int i;
-    for(i = 0; i < nr_symtab_entry; i++) {
-        if(addr >= symtab[i].st_value && addr < symtab[i].st_value + symtab[i].st_size) {
-            strcpy(str, strtab + symtab[i].st_name);
-            return true;
-        }
-    }
-    return false;
-}
