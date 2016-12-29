@@ -7,7 +7,7 @@ void init_ide();
 void init_i8259();
 void init_segment();
 void init_idt();
-void init_mm();
+void 
 uint32_t loader();
 
 void video_mapping_write_test();
